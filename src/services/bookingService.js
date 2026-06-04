@@ -2,8 +2,8 @@ const prisma = require("../config/db");
 const fs = require("fs").promises; // Used for non-blocking local file deletion
 const uploadPdfToCloudinary = require("../utils/uploadPdfToCloudinary");
 const generateBookingPdf = require("../utils/generateBookingPdf");
-const uploadPdfToMeta = require("../utils/uploadPdfToMeta");
-const sendWhatsappMessage = require("../utils/sendWhatsappMessage");
+// const uploadPdfToMeta = require("../utils/uploadPdfToMeta");
+// const sendWhatsappMessage = require("../utils/sendWhatsappMessage");
 const { sendBookingEmail, } = require("../services/email.service");
 
 const createBooking = async (data) => {
@@ -48,28 +48,28 @@ const processBookingDocuments = async (booking) => {
       data: { pdfUrl },
     });
     // sending email with attachment
-    await sendBookingEmail(
-      booking,
-      pdfPath
-    );
+    console.log("Before sendBookingEmail");
 
-    console.log(
-      "Booking Email Sent Successfully"
-    );
-    // 4. Upload the local document directly to Meta Media API
-    const mediaId = await uploadPdfToMeta(pdfPath);
+await sendBookingEmail(booking, pdfPath);
 
-    // 5. Fire WhatsApp message via media ID
-    await sendWhatsappMessage(booking.phone, mediaId);
-    console.log("WhatsApp Sent Successfully via Meta Media ID");
+console.log("After sendBookingEmail");
+
+// console.log("Before uploadPdfToMeta");
+
+// const mediaId = await uploadPdfToMeta(pdfPath);
+
+// console.log("After uploadPdfToMeta");
+
+// console.log("Before sendWhatsappMessage");
+
+// await sendWhatsappMessage(booking.phone, mediaId);
+
+// console.log("After sendWhatsappMessage");
 
 
 
   } catch (error) {
-    console.error(
-      "Background Process Error =>",
-      error.response?.data || error.message
-    );
+    console.error("FULL ERROR:", error);
   } finally {
     // 6. ALWAYS cleanup the local server file system
     if (pdfPath) {
