@@ -66,7 +66,7 @@ console.log("After sendBookingEmail");
 
 // console.log("After sendWhatsappMessage");
 
-
+console.log("SUCCESS: Booking document processed and email sent.");
 
   } catch (error) {
     console.error("FULL ERROR:", error);
